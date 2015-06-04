@@ -1,0 +1,45 @@
+--[[Terminus API
+
+Sylvyrfysh - All Rights Reserved
+Unauthorized copying, and/or redistribution of this file, via any medium without express written permission of Sylvyrfysh (Nicholas Johnson) is strictly prohibited
+Proprietary and confidential
+Written by Nicholas Johnson <johnnic431@gmail.com>, May 3 2015
+
+]]
+
+--[[
+	Use name to specify the name of your application.
+		Each application will keep an individual log
+	use generalLog to pass Terminus' log object if you want your app's
+		output to be recorded to the system log.
+]]
+
+function init(this,name,generalLog)
+    new={};
+	new.time=os.clock();
+	new.name=(name or "Log");
+	new.generalLog=generalLog;
+	new.file=fs.open("logs/"..name..os.day().."_"..os.time(),"w")
+	for k,v in pairs(this) do
+		if k~="init" then
+			new[k]=v;
+		end
+	end
+	return setmetatable(new,this);
+end
+
+function i(this,info)
+	this.file.writeLine("["..this.name.." "..os.clock()-this.time.."] "..info);
+	this.file.flush();
+	if this.generalLog then
+		this.generalLog:i("["..this.name.." "..os.clock()-this.time.."] "..info);
+	end
+end	
+
+function e(this,info)
+	this.file.writeLine("[ERROR]["..this.name.." "..os.clock()-this.time.."] "..info);
+	this.file.flush();
+	if this.generalLog then
+		this.generalLog:e("["..this.name.." "..os.clock()-this.time.."] "..info);
+	end
+end	
