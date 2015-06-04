@@ -1,0 +1,59 @@
+--[[Terminus API
+
+Written by Sylvyrfysh - All Rights Reserved
+Unauthorized copying, and/or redistribution of this file, via any medium without express written permission of Sylvyrfysh (Nicholas Johnson) is strictly prohibited
+Proprietary and confidential
+Written by Nicholas Johnson <johnnic431@gmail.com>, May 3 2015
+
+]]
+
+local version="0.0.1"
+
+--[[
+call this like
+
+ * ter=terminus:init("AppName",true)
+ * nameString=reds:name()
+
+ Notice the use of the colon (:)  rather than a period (.)
+ This is lua's implementation of objects.
+ Using a period can be used, but it will need to be used like this
+ 
+ * ter=terminus:init("AppName",true) (Notice this still needs a colon)
+ * nameString=terminus.name(reds)
+ 
+ This implementation works the same, all terminus and
+	rEVOlut.OS 2 code will use the top implementation
+
+]]
+
+function init(this,name,terminatable)
+    new={};
+	new.view=nil;
+	new.eventHandlers={};
+	new.isTerminatable=(terminatable or true);
+	new.name=(name or "Terminus v"..version.." application");
+	inf=info or {};
+	for k,v in pairs(this) do
+		if k~="init" then
+			new[k]=v;
+		end
+	end
+	return setmetatable(new,this);
+end
+
+function typeof()
+	return "redstone_base";
+end
+
+function name(this)
+	return this.name;
+end
+
+function setScreen(this,scr)
+	if scr.typeof()~="screen" then
+		return false;
+	end
+	this.view=scr;
+	return true;
+end
