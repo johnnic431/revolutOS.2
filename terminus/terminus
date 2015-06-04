@@ -1,26 +1,39 @@
 --[[Terminus API
 
-Written by Sylvyrfysh - All Rights Reserved
+Sylvyrfysh - All Rights Reserved
 Unauthorized copying, and/or redistribution of this file, via any medium without express written permission of Sylvyrfysh (Nicholas Johnson) is strictly prohibited
 Proprietary and confidential
 Written by Nicholas Johnson <johnnic431@gmail.com>, May 3 2015
 
 ]]
 
-local version="0.0.1"
+--[[
+	asterisks at the beginning of a line denominate a line of code
+	ex.
+	
+ * print("Hi")
+ * if(true) then
+ 
+	etc.
+]]
+
+local api_version=0;
+local revision=0;
+local build=1;
+local version=api_version.."."..revision.."."..build;
 
 --[[
 call this like
 
  * ter=terminus:init("AppName",true)
- * nameString=reds:name()
+ * nameString=ter:name()
 
  Notice the use of the colon (:)  rather than a period (.)
  This is lua's implementation of objects.
  Using a period can be used, but it will need to be used like this
  
  * ter=terminus:init("AppName",true) (Notice this still needs a colon)
- * nameString=terminus.name(reds)
+ * nameString=terminus.name(ter)
  
  This implementation works the same, all terminus and
 	rEVOlut.OS 2 code will use the top implementation
@@ -33,7 +46,8 @@ function init(this,name,terminatable)
 	new.eventHandlers={};
 	new.isTerminatable=(terminatable or true);
 	new.name=(name or "Terminus v"..version.." application");
-	inf=info or {};
+	new.log=Logger:init("terminus");
+	new.log:i("Initializing Terminus v"..version);
 	for k,v in pairs(this) do
 		if k~="init" then
 			new[k]=v;
@@ -42,9 +56,24 @@ function init(this,name,terminatable)
 	return setmetatable(new,this);
 end
 
-function typeof()
-	return "redstone_base";
+--use these two functions in programs to test compatibility.
+--builds will simply fix security issues ans optimize functions
+
+function getAPIVer()
+	return api_version;
 end
+
+function getRevision()
+	return revision;
+end
+
+--this is simply used internally to find out if the correct file object is being passed to the function
+
+function typeof()
+	return "terminus_base";
+end
+
+--returns the name of this application for logging and other internal functions
 
 function name(this)
 	return this.name;
