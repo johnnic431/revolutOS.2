@@ -59,10 +59,13 @@ function start(this,method)
 	this.log:i("Starting app "..this:name());
 	this.coro=coroutine.create(
 		function()
-			local retTbl={pcall(method)};
+			local retTbl={xpcall(method,
+				function (msg)
+					return msg..'\n'..debug.traceback()..'\n';
+				end)
+			};
 			if retTbl[1]==false then
 				this.log:e(retTbl[2]);
-				this.log:e(debug.traceback());
 			end
 		end
 	);
