@@ -33,7 +33,7 @@ call this like
  Using a period can be used, but it will need to be used like this
  
  * ter=terminus:init("AppName",true) (Notice this still needs a colon)
- * nameString=terminus.name(ter)
+ * nameString=terminus.name(ter) --use the object as the first arg
  
  This implementation works the same, all terminus and
 	rEVOlut.OS 2 code will use the top implementation
@@ -43,10 +43,9 @@ call this like
 function init(this,name,terminatable)
     new={};
 	new.view=nil;
-	new.eventHandlers={};
 	new.isTerminatable=(terminatable or true);
 	new.name=(name or "Terminus v"..version.." application");
-	new.log=Logger:init("terminus");
+	new.log=Logger:init("system");
 	new.log:i("Initializing Terminus v"..version);
 	for k,v in pairs(this) do
 		if k~="init" then
@@ -54,6 +53,19 @@ function init(this,name,terminatable)
 		end
 	end
 	return setmetatable(new,this);
+end
+
+function start(this,method)
+	this.log:i("Starting app "..this:name());
+	this.coro=coroutine.create(
+		function()
+			local retTbl={pcall(method)};
+			if retTbl[1]==false then
+				this.log:e(retTbl[2]);
+				this.log:e(debug.traceback());
+			end
+		end
+	);
 end
 
 --use these two functions in programs to test compatibility.
