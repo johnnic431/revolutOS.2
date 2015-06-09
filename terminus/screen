@@ -1,0 +1,41 @@
+--[[Terminus API
+
+Sylvyrfysh - All Rights Reserved
+Unauthorized copying, and/or redistribution of this file, via any medium without express written permission of Sylvyrfysh (Nicholas Johnson) is strictly prohibited
+Proprietary and confidential
+Written by Nicholas Johnson <johnnic431@gmail.com>, May 7 2015
+
+]]
+
+function init(this,name,ter)
+    new={};
+	new.name=(name or "Log");
+	new.drawables={};
+	for k,v in pairs(this) do
+		if k~="init" then
+			new[k]=v;
+		end
+	end
+	return setmetatable(new,this);
+end
+
+function typeof()
+	return "screen";
+end
+
+function addFunction(this,tbl)
+	if ~tbl.name then return false; end
+	if ~tbl.draw then return false; end
+	this.drawables[tbl.name]=tbl.draw;
+	return true;
+end
+
+function returnFunction(this,name)
+	this.drawables[name]=nil;
+end
+
+function redraw(this)
+	for t,y in ipairs(this.drawables) do
+		pcall(y);
+	end
+end
