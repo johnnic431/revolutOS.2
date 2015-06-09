@@ -1,0 +1,33 @@
+--[[Terminus API
+
+Sylvyrfysh - All Rights Reserved
+Unauthorized copying, and/or redistribution of this file, via any medium without express written permission of Sylvyrfysh (Nicholas Johnson) is strictly prohibited
+Proprietary and confidential
+Written by Nicholas Johnson <johnnic431@gmail.com>, May 8 2015
+
+]]
+
+--[[
+
+Slim graphics API. This comes with all versions of revolutOS
+Simple functions, simple text functions
+
+]]
+
+sX,sY=term.getSize();
+pb=paintutils;
+
+function fillBack(color)
+	term.setColor(color);
+	for y=1,sY do
+		pb.drawLine(1,y,sX,y);
+	end
+end
+
+function writeTextCentered(text,y.tCol)
+	if text==nil or y<=0 then return false; end
+	sValue=(sX-string.len(text))/2;
+	if tCol then term.setTextColor(tCol) end
+	term.setPos(sValue,y);
+	term.write(text);
+end
