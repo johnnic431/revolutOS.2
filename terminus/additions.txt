@@ -1,0 +1,9 @@
+Computer link over wireless/wired
+Computetr link in general
+chat plugin???
+filesharing
+multi-user based off of server
+server API for web/filesharing
+rewritten fs???
+application selector
+turtle command (2D control)
