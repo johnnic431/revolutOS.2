@@ -11,6 +11,7 @@ function init(this,name,ter)
     new={};
 	new.name=(name or "Log");
 	new.drawables={};
+	new.termi=ter;
 	for k,v in pairs(this) do
 		if k~="init" then
 			new[k]=v;
@@ -24,18 +25,26 @@ function typeof()
 end
 
 function addFunction(this,tbl)
-	if ~tbl.name then return false; end
-	if ~tbl.draw then return false; end
-	this.drawables[tbl.name]=tbl.draw;
+	if tbl.name==nil then return false; end
+	if tbl.draw==nil then return false; end
+	table.insert(this.drawables,tbl);
+	this.termi:log_i("Adding function "..tbl.name);
 	return true;
 end
 
 function returnFunction(this,name)
-	this.drawables[name]=nil;
+	for i=1,#this.drawables do
+		if this.drawables[i].name==name then
+			this.drawables[i]=nil;
+		end
+	end
 end
 
 function redraw(this)
-	for t,y in ipairs(this.drawables) do
-		pcall(y);
+	this.termi:log_i("Redrawing...");
+	for t,y in pairs(this.drawables) do
+		this.termi:log_i("Drawing "..t);
+		y.draw();
 	end
+	this.termi:log_i("Done redrawing!");
 end

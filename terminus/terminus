@@ -44,7 +44,8 @@ function init(this,name,terminatable)
     new={};
 	new.view=nil;
 	new.isTerminatable=(terminatable or true);
-	new.name=(name or "Terminus v"..version.." application");
+	new.pname=(name or "Terminus v"..version.." application");
+	os.loadAPI("Logger");
 	new.log=Logger:init("system");
 	new.log:i("Initializing Terminus v"..version);
 	for k,v in pairs(this) do
@@ -82,6 +83,10 @@ function getRevision()
 	return revision;
 end
 
+function log_i(this,info)
+	this.log:i(info);
+end
+
 --this is simply used internally to find out if the correct file object is being passed to the function
 
 function typeof()
@@ -91,13 +96,14 @@ end
 --returns the name of this application for logging and other internal functions
 
 function name(this)
-	return this.name;
+	return this.pname;
 end
 
 function setScreen(this,scr)
-	if scr.typeof()~="screen" then
-		return false;
-	end
 	this.view=scr;
 	return true;
+end
+
+function draw(this)
+	this.view:redraw();
 end

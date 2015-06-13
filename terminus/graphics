@@ -24,10 +24,10 @@ function fillBack(color)
 	end
 end
 
-function writeTextCentered(text,y.tCol)
+function writeTextCentered(text,y,tCol)
 	if text==nil or y<=0 then return false; end
 	sValue=(sX-string.len(text))/2;
 	if tCol then term.setTextColor(tCol) end
-	term.setPos(sValue,y);
+	term.setCursorPos(sValue,y);
 	term.write(text);
 end
